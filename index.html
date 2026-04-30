@@ -698,10 +698,10 @@ const TEACHERS = [
 ];
 
 let localData = JSON.parse(localStorage.getItem('sjp_elective_data') || '[]');
-let gsUrl = localStorage.getItem('sjp_gs_url') || '';
+let gsUrl = localStorage.getItem('sjp_gs_url') || 'https://script.google.com/macros/s/AKfycbyQXAzM8emBmKjCFsY-N-QNsrreGXQ9UMj_31GFPYc68VT09xO1KM0UQAIcnSOMvhzz/exec';
 
 // init
-document.getElementById('gs-url').value = gsUrl;
+document.getElementById('gs-url').value = localStorage.getItem('sjp_gs_url') || 'https://script.google.com/macros/s/AKfycbyQXAzM8emBmKjCFsY-N-QNsrreGXQ9UMj_31GFPYc68VT09xO1KM0UQAIcnSOMvhzz/exec';
 
 // ===== TABS =====
 function switchTab(name) {
