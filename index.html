@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เปิดรายวิชาเพิ่มเติม ภาคเรียนที่ 1/2569 – โรงเรียนสวายจีกพิทยาคม</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=Noto+Serif+Thai:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a6b3a;
+    --green-light: #2d9653;
+    --green-pale: #e8f5ed;
+    --gold: #c9921a;
+    --gold-light: #f0b429;
+    --gold-pale: #fdf6e3;
+    --red: #c0392b;
+    --blue: #1565c0;
+    --blue-pale: #e3f0ff;
+    --bg: #f5f7f2;
+    --card: #ffffff;
+    --text: #1a2e1a;
+    --text-muted: #5a6e5a;
+    --border: #c8ddc8;
+    --shadow: 0 2px 16px rgba(26,107,58,0.10);
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: linear-gradient(135deg, var(--green) 0%, #0d4a27 60%, #07301a 100%);
+    color: #fff;
+    padding: 28px 24px 22px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .header-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 14px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .header h1 {
+    font-family: 'Noto Serif Thai', serif;
+    font-size: clamp(18px, 4vw, 26px);
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+  .header p {
+    font-size: 14px;
+    opacity: 0.85;
+    font-weight: 300;
+  }
+
+  /* ===== NAV TABS ===== */
+  .nav {
+    display: flex;
+    background: var(--card);
+    border-bottom: 2px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .nav-btn {
+    flex: 1;
+    padding: 14px 8px;
+    border: none;
+    background: transparent;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+    position: relative;
+    top: 2px;
+  }
+  .nav-btn.active {
+    color: var(--green);
+    border-bottom-color: var(--green);
+  }
+  .nav-btn:hover:not(.active) { background: var(--green-pale); }
+
+  /* ===== CONTENT ===== */
+  .content { display: none; padding: 20px 16px 40px; max-width: 720px; margin: 0 auto; }
+  .content.active { display: block; }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px 20px;
+    margin-bottom: 18px;
+    border: 1px solid var(--border);
+  }
+  .card-title {
+    font-family: 'Noto Serif Thai', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title .icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .icon-career { background: var(--gold-pale); }
+  .icon-sport  { background: var(--blue-pale); }
+  .icon-teacher{ background: var(--green-pale); }
+
+  /* ===== FORM ===== */
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 5px; }
+  select, input[type=text] {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    background: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6e5a' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  select:focus, input[type=text]:focus {
+    outline: none;
+    border-color: var(--green-light);
+    box-shadow: 0 0 0 3px rgba(45,150,83,0.12);
+  }
+  .form-group { margin-bottom: 14px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media(max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
+
+  .section-divider {
+    height: 2px;
+    background: linear-gradient(90deg, var(--green-pale), transparent);
+    margin: 6px 0 18px;
+    border-radius: 2px;
+  }
+
+  /* subject type toggle */
+  .type-toggle { display: flex; gap: 8px; margin-bottom: 14px; }
+  .type-btn {
+    flex: 1; padding: 9px; border: 2px solid var(--border);
+    border-radius: 10px; background: #fff; cursor: pointer;
+    font-family: 'Sarabun', sans-serif; font-size: 13px; font-weight: 600;
+    color: var(--text-muted); transition: all 0.2s; text-align: center;
+  }
+  .type-btn.sel-career { border-color: var(--gold); background: var(--gold-pale); color: var(--gold); }
+  .type-btn.sel-sport  { border-color: var(--blue); background: var(--blue-pale); color: var(--blue); }
+
+  /* ===== SUBMIT BTN ===== */
+  .btn-submit {
+    width: 100%; padding: 15px; border: none; border-radius: 12px;
+    background: linear-gradient(135deg, var(--green-light), var(--green));
+    color: #fff; font-family: 'Sarabun', sans-serif;
+    font-size: 16px; font-weight: 700; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(26,107,58,0.35);
+    transition: transform 0.15s, box-shadow 0.15s;
+    margin-top: 6px;
+  }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(26,107,58,0.4); }
+  .btn-submit:active { transform: translateY(0); }
+  .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--green); color: #fff; padding: 12px 24px;
+    border-radius: 30px; font-size: 14px; font-weight: 600;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 999;
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { background: var(--red); }
+
+  /* ===== DASHBOARD ===== */
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px; }
+  .stat-card {
+    background: var(--card); border-radius: 14px; padding: 16px 12px;
+    text-align: center; box-shadow: var(--shadow); border: 1px solid var(--border);
+  }
+  .stat-num { font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+  .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+  .stat-green .stat-num { color: var(--green); }
+  .stat-gold  .stat-num { color: var(--gold); }
+  .stat-blue  .stat-num { color: var(--blue); }
+
+  /* progress bar */
+  .progress-wrap { background: var(--green-pale); border-radius: 8px; height: 10px; overflow: hidden; margin: 6px 0 3px; }
+  .progress-bar  { height: 100%; background: linear-gradient(90deg, var(--green-light), var(--green)); border-radius: 8px; transition: width 0.6s ease; }
+
+  /* teacher status list */
+  .teacher-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  @media(max-width: 420px) { .teacher-grid { grid-template-columns: 1fr; } }
+  .teacher-chip {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 12px; border-radius: 10px; font-size: 13px; font-weight: 500;
+    border: 1.5px solid;
+  }
+  .teacher-chip.done   { background: var(--green-pale); border-color: #b2dfc2; color: var(--green); }
+  .teacher-chip.pending{ background: #fafafa; border-color: #e0e0e0; color: #999; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-done    { background: var(--green-light); }
+  .dot-pending { background: #ccc; }
+
+  /* subject list */
+  .subj-list { display: flex; flex-direction: column; gap: 10px; }
+  .subj-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 16px; border-radius: 12px; border: 1.5px solid;
+  }
+  .subj-item.career { background: var(--gold-pale); border-color: #e8c97a; }
+  .subj-item.sport  { background: var(--blue-pale); border-color: #90bde8; }
+  .subj-badge {
+    font-size: 11px; font-weight: 700; padding: 2px 8px;
+    border-radius: 6px; white-space: nowrap; flex-shrink: 0; margin-top: 2px;
+  }
+  .badge-career { background: var(--gold); color: #fff; }
+  .badge-sport  { background: var(--blue); color: #fff; }
+  .subj-info { flex: 1; }
+  .subj-name { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+  .subj-teachers { font-size: 12px; color: var(--text-muted); }
+  .subj-teachers span { font-weight: 600; color: var(--text); }
+
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); }
+  .empty-state .emoji { font-size: 48px; margin-bottom: 10px; }
+
+  /* ===== CONFIG CARD ===== */
+  .config-info {
+    background: linear-gradient(135deg, #e8f5ed, #f5fdf8);
+    border: 1.5px dashed var(--green-light);
+    border-radius: 12px; padding: 16px; margin-bottom: 18px;
+    font-size: 13px; color: var(--text-muted); line-height: 1.7;
+  }
+  .config-info strong { color: var(--green); }
+  .config-url {
+    width: 100%; padding: 8px 12px; border: 1.5px solid var(--border);
+    border-radius: 8px; font-size: 13px; font-family: monospace;
+    color: var(--text); background: #fff; margin-top: 8px;
+  }
+  .btn-small {
+    padding: 7px 14px; border: none; border-radius: 8px;
+    background: var(--green); color: #fff; font-size: 13px;
+    font-weight: 600; cursor: pointer; font-family: 'Sarabun', sans-serif;
+    margin-top: 8px; display: inline-block;
+  }
+  .btn-small.secondary { background: #eee; color: var(--text); }
+
+  .section-label {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--text-muted);
+    margin-bottom: 10px; margin-top: 20px;
+  }
+
+  .alert { padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: 500; margin-bottom: 14px; }
+  .alert-warn { background: #fff8e1; border: 1.5px solid #ffe082; color: #7a5800; }
+  .alert-info { background: var(--blue-pale); border: 1.5px solid #90bde8; color: #0d47a1; }
+
+  /* ===== ADMIN LOCK ===== */
+  .admin-lock-overlay {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 420px; padding: 32px 20px; text-align: center;
+  }
+  .lock-icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--green-pale), #d0edda);
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; margin-bottom: 18px;
+    box-shadow: 0 4px 16px rgba(26,107,58,0.12);
+  }
+  .lock-title {
+    font-family: 'Noto Serif Thai', serif;
+    font-size: 18px; font-weight: 700; color: var(--green);
+    margin-bottom: 6px;
+  }
+  .lock-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .pin-row {
+    display: flex; gap: 10px; justify-content: center; margin-bottom: 18px;
+  }
+  .pin-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid var(--green-light); background: transparent;
+    transition: background 0.2s;
+  }
+  .pin-dot.filled { background: var(--green-light); }
+  .pin-pad {
+    display: grid; grid-template-columns: repeat(3, 64px); gap: 10px;
+    justify-content: center; margin-bottom: 16px;
+  }
+  .pin-key {
+    width: 64px; height: 56px; border-radius: 12px;
+    border: 1.5px solid var(--border); background: var(--card);
+    font-family: 'Sarabun', sans-serif; font-size: 20px; font-weight: 700;
+    color: var(--text); cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    transition: all 0.12s;
+  }
+  .pin-key:active { transform: scale(0.94); background: var(--green-pale); border-color: var(--green-light); }
+  .pin-key.del { font-size: 16px; color: var(--text-muted); }
+  .pin-error { font-size: 13px; color: var(--red); min-height: 20px; font-weight: 600; }
+  .admin-logout {
+    display: flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border: 1.5px solid var(--border);
+    border-radius: 8px; background: #fff; font-size: 13px;
+    font-weight: 600; color: var(--text-muted); cursor: pointer;
+    font-family: 'Sarabun', sans-serif; transition: all 0.2s;
+    margin-left: auto; margin-bottom: 14px;
+  }
+  .admin-logout:hover { border-color: var(--red); color: var(--red); }
+
+  .spinner {
+    display: inline-block; width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff;
+    border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .refresh-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 14px; border: 1.5px solid var(--border);
+    border-radius: 8px; background: #fff; font-size: 13px;
+    font-weight: 600; color: var(--text-muted); cursor: pointer;
+    font-family: 'Sarabun', sans-serif; transition: all 0.2s;
+    margin-left: auto;
+  }
+  .refresh-btn:hover { border-color: var(--green); color: var(--green); }
+
+  .dash-header { display: flex; align-items: center; margin-bottom: 16px; }
+  .dash-header h2 { font-family: 'Noto Serif Thai', serif; font-size: 16px; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-badge">ภาคเรียนที่ 1 / 2569</div>
+  <h1>แจ้งเปิดรายวิชาเพิ่มเติม<br>โรงเรียนสวายจีกพิทยาคม</h1>
+  <p>กรุณากรอกข้อมูลรายวิชาที่ต้องการเปิดสอน</p>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-btn active" onclick="switchTab('form')">📝 แจ้งรายวิชา</button>
+  <button class="nav-btn" onclick="switchTab('dashboard')">📊 Dashboard</button>
+  <button class="nav-btn" onclick="switchTab('settings')">⚙️ ตั้งค่า</button>
+</div>
+
+<!-- ========== FORM TAB ========== -->
+<div id="tab-form" class="content active">
+
+  <div class="card">
+    <div class="card-title"><span class="icon icon-teacher">👤</span> ข้อมูลครูผู้สอน</div>
+    <div class="form-group">
+      <label>เลือกชื่อครู *</label>
+      <select id="sel-teacher">
+        <option value="">— กรุณาเลือกชื่อครู —</option>
+        <option>นายอกรณ์เชฐ จันทร์โสดา</option>
+        <option>นายบุญช่วย สายลาม</option>
+        <option>นางสาวภัทราวดี สวัสดิ์รัมย์</option>
+        <option>นางนิตยา โพธิ์เปี้ยศรี</option>
+        <option>นายพนัส วิโสรัมย์</option>
+        <option>นางวารินทร์ เข็มรัมย์</option>
+        <option>นางอเทตยา แก้วศรีหา</option>
+        <option>นางสาวคณิตตา มีเสียง</option>
+        <option>นายไพรวัลย์ โพธิ์เปี้ยศรี</option>
+        <option>นายธีรพงษ์ เช่นพิมาย</option>
+        <option>นางเกื้อกูล ดีรัมย์</option>
+        <option>นางสาวธิติมา ทองคำ</option>
+        <option>นางณัฐดารัตน์ ศกุนะสิงห์</option>
+        <option>นางสาวปาริฉัตร ปะโสทะกัง</option>
+        <option>นางสาวกุสุมา กลิ้งรัมย์</option>
+        <option>นายชาตรี อุทาน</option>
+        <option>นางสาวจรรยา ยิงนารัมย์</option>
+        <option>นายสันติ โกเทริปู</option>
+        <option>นางสาวภคพร เพประโคน</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- วิชาอาชีพ -->
+  <div class="card">
+    <div class="card-title"><span class="icon icon-career">💼</span> รายวิชาเพิ่มเติมอาชีพ</div>
+    <div class="form-group">
+      <label>ชื่อวิชา *</label>
+      <input type="text" id="career-name" placeholder="เช่น ผลิตภัณฑ์จากมะพร้าว, คอมพิวเตอร์ธุรกิจ...">
+    </div>
+    <div class="form-group">
+      <label>ครูร่วมสอน (ไม่เกิน 1 คน)</label>
+      <select id="career-co">
+        <option value="">— ไม่มีครูร่วมสอน —</option>
+        <option>นายอกรณ์เชฐ จันทร์โสดา</option>
+        <option>นายบุญช่วย สายลาม</option>
+        <option>นางสาวภัทราวดี สวัสดิ์รัมย์</option>
+        <option>นางนิตยา โพธิ์เปี้ยศรี</option>
+        <option>นายพนัส วิโสรัมย์</option>
+        <option>นางวารินทร์ เข็มรัมย์</option>
+        <option>นางอเทตยา แก้วศรีหา</option>
+        <option>นางสาวคณิตตา มีเสียง</option>
+        <option>นายไพรวัลย์ โพธิ์เปี้ยศรี</option>
+        <option>นายธีรพงษ์ เช่นพิมาย</option>
+        <option>นางเกื้อกูล ดีรัมย์</option>
+        <option>นางสาวธิติมา ทองคำ</option>
+        <option>นางณัฐดารัตน์ ศกุนะสิงห์</option>
+        <option>นางสาวปาริฉัตร ปะโสทะกัง</option>
+        <option>นางสาวกุสุมา กลิ้งรัมย์</option>
+        <option>นายชาตรี อุทาน</option>
+        <option>นางสาวจรรยา ยิงนารัมย์</option>
+        <option>นายสันติ โกเทริปู</option>
+        <option>นางสาวภคพร เพประโคน</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- วิชากีฬา -->
+  <div class="card">
+    <div class="card-title"><span class="icon icon-sport">⚽</span> รายวิชาเพิ่มเติมกีฬา</div>
+    <div class="form-group">
+      <label>ชื่อวิชา *</label>
+      <input type="text" id="sport-name" placeholder="เช่น ฟุตบอล, วอลเลย์บอล, บาสเกตบอล...">
+    </div>
+    <div class="form-group">
+      <label>ครูร่วมสอน (ไม่เกิน 1 คน)</label>
+      <select id="sport-co">
+        <option value="">— ไม่มีครูร่วมสอน —</option>
+        <option>นายอกรณ์เชฐ จันทร์โสดา</option>
+        <option>นายบุญช่วย สายลาม</option>
+        <option>นางสาวภัทราวดี สวัสดิ์รัมย์</option>
+        <option>นางนิตยา โพธิ์เปี้ยศรี</option>
+        <option>นายพนัส วิโสรัมย์</option>
+        <option>นางวารินทร์ เข็มรัมย์</option>
+        <option>นางอเทตยา แก้วศรีหา</option>
+        <option>นางสาวคณิตตา มีเสียง</option>
+        <option>นายไพรวัลย์ โพธิ์เปี้ยศรี</option>
+        <option>นายธีรพงษ์ เช่นพิมาย</option>
+        <option>นางเกื้อกูล ดีรัมย์</option>
+        <option>นางสาวธิติมา ทองคำ</option>
+        <option>นางณัฐดารัตน์ ศกุนะสิงห์</option>
+        <option>นางสาวปาริฉัตร ปะโสทะกัง</option>
+        <option>นางสาวกุสุมา กลิ้งรัมย์</option>
+        <option>นายชาตรี อุทาน</option>
+        <option>นางสาวจรรยา ยิงนารัมย์</option>
+        <option>นายสันติ โกเทริปู</option>
+        <option>นางสาวภคพร เพประโคน</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="form-alert" class="alert alert-warn" style="display:none"></div>
+
+  <button class="btn-submit" id="btn-submit" onclick="submitForm()">
+    ✅ ส่งข้อมูล
+  </button>
+  <p style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:10px;">
+    * สามารถส่งข้อมูลได้หลายครั้ง ระบบจะบันทึกล่าสุด
+  </p>
+</div>
+
+<!-- ========== DASHBOARD TAB ========== -->
+<div id="tab-dashboard" class="content">
+  <div class="dash-header">
+    <h2>📊 รายงานภาพรวม</h2>
+    <button class="refresh-btn" onclick="loadDashboard()">🔄 รีเฟรช</button>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card stat-green">
+      <div class="stat-num" id="stat-done">–</div>
+      <div class="stat-label">ครูตอบแล้ว</div>
+    </div>
+    <div class="stat-card stat-gold">
+      <div class="stat-num" id="stat-career">–</div>
+      <div class="stat-label">วิชาอาชีพ</div>
+    </div>
+    <div class="stat-card stat-blue">
+      <div class="stat-num" id="stat-sport">–</div>
+      <div class="stat-label">วิชากีฬา</div>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="card">
+    <div class="card-title"><span class="icon icon-teacher">📋</span> สถานะครู (19 คน)</div>
+    <div style="margin-bottom: 12px;">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:4px;">
+        <span>ความคืบหน้า</span>
+        <span id="progress-text">0/19 คน</span>
+      </div>
+      <div class="progress-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+    </div>
+    <div class="teacher-grid" id="teacher-status-grid">
+      <div style="color:var(--text-muted);font-size:13px;text-align:center;padding:20px;grid-column:span 2">กำลังโหลด...</div>
+    </div>
+  </div>
+
+  <!-- วิชาอาชีพ -->
+  <div class="card">
+    <div class="card-title"><span class="icon icon-career">💼</span> รายวิชาเพิ่มเติมอาชีพ</div>
+    <div class="subj-list" id="career-list">
+      <div class="empty-state"><div class="emoji">📭</div><div>ยังไม่มีข้อมูล</div></div>
+    </div>
+  </div>
+
+  <!-- วิชากีฬา -->
+  <div class="card">
+    <div class="card-title"><span class="icon icon-sport">⚽</span> รายวิชาเพิ่มเติมกีฬา</div>
+    <div class="subj-list" id="sport-list">
+      <div class="empty-state"><div class="emoji">📭</div><div>ยังไม่มีข้อมูล</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SETTINGS TAB ========== -->
+<div id="tab-settings" class="content">
+
+  <!-- LOCK SCREEN -->
+  <div id="admin-lock-screen" class="card">
+    <div class="admin-lock-overlay">
+      <div class="lock-icon">🔒</div>
+      <div class="lock-title">หน้าสำหรับ Admin เท่านั้น</div>
+      <div class="lock-sub">กรุณากรอกรหัส PIN 4 หลักเพื่อเข้าถึงการตั้งค่า</div>
+      <div class="pin-row">
+        <div class="pin-dot" id="d0"></div>
+        <div class="pin-dot" id="d1"></div>
+        <div class="pin-dot" id="d2"></div>
+        <div class="pin-dot" id="d3"></div>
+      </div>
+      <div class="pin-pad">
+        <button class="pin-key" onclick="pinPress('1')">1</button>
+        <button class="pin-key" onclick="pinPress('2')">2</button>
+        <button class="pin-key" onclick="pinPress('3')">3</button>
+        <button class="pin-key" onclick="pinPress('4')">4</button>
+        <button class="pin-key" onclick="pinPress('5')">5</button>
+        <button class="pin-key" onclick="pinPress('6')">6</button>
+        <button class="pin-key" onclick="pinPress('7')">7</button>
+        <button class="pin-key" onclick="pinPress('8')">8</button>
+        <button class="pin-key" onclick="pinPress('9')">9</button>
+        <button class="pin-key del" onclick="pinClear()">ล้าง</button>
+        <button class="pin-key" onclick="pinPress('0')">0</button>
+        <button class="pin-key del" onclick="pinBack()">⌫</button>
+      </div>
+      <div class="pin-error" id="pin-error"></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS CONTENT (hidden until unlocked) -->
+  <div id="admin-content" style="display:none">
+    <div style="display:flex;align-items:center;margin-bottom:14px;">
+      <span style="font-size:13px;color:var(--green);font-weight:600;">🔓 Admin Mode</span>
+      <button class="admin-logout" onclick="adminLogout()">🔒 ออกจากระบบ</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">⚙️</span> ตั้งค่าการเชื่อมต่อ Google Sheet</div>
+      <div class="config-info">
+        <strong>วิธีตั้งค่า:</strong><br>
+        1. สร้าง Google Sheet ใหม่<br>
+        2. เปิด <strong>Extensions → Apps Script</strong><br>
+        3. วาง Code.gs ที่ให้ไว้ด้านล่าง<br>
+        4. Deploy → New Deployment → Web App (Anyone)<br>
+        5. คัดลอก URL มาวางในช่องด้านล่าง
+      </div>
+      <div class="form-group">
+        <label>Google Apps Script Web App URL</label>
+        <input type="text" id="gs-url" placeholder="https://script.google.com/macros/s/...../exec"
+               value="" oninput="saveSettings()">
+      </div>
+      <div id="conn-status" style="font-size:13px;margin-top:6px;"></div>
+      <button class="btn-small" onclick="testConnection()">🔗 ทดสอบการเชื่อมต่อ</button>
+      <button class="btn-small secondary" onclick="clearLocalData()" style="margin-left:8px;">🗑️ ล้างข้อมูลท้องถิ่น</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🔑</span> เปลี่ยนรหัส Admin PIN</div>
+      <div class="form-group">
+        <label>PIN ปัจจุบัน</label>
+        <input type="password" id="old-pin" maxlength="4" placeholder="····" style="letter-spacing:6px;font-size:18px;">
+      </div>
+      <div class="form-group">
+        <label>PIN ใหม่ (4 หลัก)</label>
+        <input type="password" id="new-pin" maxlength="4" placeholder="····" style="letter-spacing:6px;font-size:18px;">
+      </div>
+      <div class="form-group">
+        <label>ยืนยัน PIN ใหม่</label>
+        <input type="password" id="confirm-pin" maxlength="4" placeholder="····" style="letter-spacing:6px;font-size:18px;">
+      </div>
+      <div id="pin-change-msg" style="font-size:13px;min-height:20px;margin-bottom:8px;"></div>
+      <button class="btn-small" onclick="changePin()">💾 บันทึก PIN ใหม่</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📋</span> Google Apps Script Code</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">คัดลอก code ด้านล่างไปวางใน Apps Script:</div>
+      <pre id="gs-code" style="background:#1e2a1e;color:#a8e6b8;padding:16px;border-radius:10px;font-size:11px;line-height:1.6;overflow-x:auto;white-space:pre-wrap;font-family:monospace;max-height:300px;overflow-y:auto;">
+const SHEET_NAME = 'รายวิชาเพิ่มเติม';
+
+function doPost(e) {
+  try {
+    const data = JSON.parse(e.postData.contents);
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let sheet = ss.getSheetByName(SHEET_NAME);
+    if (!sheet) {
+      sheet = ss.insertSheet(SHEET_NAME);
+      sheet.appendRow(['timestamp','teacher','careerSubject','careerCo','sportSubject','sportCo']);
+    }
+    const lastRow = sheet.getLastRow();
+    if (lastRow > 1) {
+      const teachers = sheet.getRange(2, 2, lastRow-1, 1).getValues();
+      for (let i = teachers.length - 1; i >= 0; i--) {
+        if (teachers[i][0] === data.teacher) sheet.deleteRow(i + 2);
+      }
+    }
+    sheet.appendRow([
+      new Date().toLocaleString('th-TH'),
+      data.teacher, data.careerSubject||'', data.careerCo||'',
+      data.sportSubject||'', data.sportCo||''
+    ]);
+    return ContentService.createTextOutput(JSON.stringify({status:'ok'}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({status:'error',msg:err.toString()}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet() {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+    if (!sheet || sheet.getLastRow() < 2)
+      return ContentService.createTextOutput(JSON.stringify({status:'ok',data:[]}))
+        .setMimeType(ContentService.MimeType.JSON);
+    const rows = sheet.getRange(2,1,sheet.getLastRow()-1,6).getValues();
+    const data = rows.map(r=>({
+      timestamp:r[0], teacher:r[1], careerSubject:r[2],
+      careerCo:r[3], sportSubject:r[4], sportCo:r[5]
+    }));
+    return ContentService.createTextOutput(JSON.stringify({status:'ok',data}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({status:'error',msg:err.toString()}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+      </pre>
+      <button class="btn-small" onclick="copyCode()">📋 คัดลอก Code</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== STATE =====
+const TEACHERS = [
+  'นายอกรณ์เชฐ จันทร์โสดา','นายบุญช่วย สายลาม','นางสาวภัทราวดี สวัสดิ์รัมย์',
+  'นางนิตยา โพธิ์เปี้ยศรี','นายพนัส วิโสรัมย์','นางวารินทร์ เข็มรัมย์',
+  'นางอเทตยา แก้วศรีหา','นางสาวคณิตตา มีเสียง','นายไพรวัลย์ โพธิ์เปี้ยศรี',
+  'นายธีรพงษ์ เช่นพิมาย','นางเกื้อกูล ดีรัมย์','นางสาวธิติมา ทองคำ',
+  'นางณัฐดารัตน์ ศกุนะสิงห์','นางสาวปาริฉัตร ปะโสทะกัง','นางสาวกุสุมา กลิ้งรัมย์',
+  'นายชาตรี อุทาน','นางสาวจรรยา ยิงนารัมย์','นายสันติ โกเทริปู','นางสาวภคพร เพประโคน'
+];
+
+let localData = JSON.parse(localStorage.getItem('sjp_elective_data') || '[]');
+let gsUrl = localStorage.getItem('sjp_gs_url') || '';
+
+// init
+document.getElementById('gs-url').value = gsUrl;
+
+// ===== TABS =====
+function switchTab(name) {
+  document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if (name === 'dashboard') loadDashboard();
+  // reset admin lock when leaving settings
+  if (name !== 'settings' && adminUnlocked) adminLogout();
+}
+
+// ===== SUBMIT =====
+async function submitForm() {
+  const teacher  = document.getElementById('sel-teacher').value.trim();
+  const careerName = document.getElementById('career-name').value.trim();
+  const careerCo   = document.getElementById('career-co').value;
+  const sportName  = document.getElementById('sport-name').value.trim();
+  const sportCo    = document.getElementById('sport-co').value;
+  const alertEl    = document.getElementById('form-alert');
+
+  alertEl.style.display = 'none';
+
+  if (!teacher) { showAlert('กรุณาเลือกชื่อครูค่ะ'); return; }
+  if (!careerName && !sportName) { showAlert('กรุณากรอกชื่อวิชาอย่างน้อย 1 วิชาค่ะ'); return; }
+
+  // ห้ามครูร่วมสอนซ้ำกับตัวเอง
+  if (careerCo && careerCo === teacher) { showAlert('ครูร่วมสอนวิชาอาชีพต้องไม่ใช่ตัวเองค่ะ'); return; }
+  if (sportCo  && sportCo  === teacher) { showAlert('ครูร่วมสอนวิชากีฬาต้องไม่ใช่ตัวเองค่ะ'); return; }
+
+  const row = { teacher, careerSubject: careerName, careerCo, sportSubject: sportName, sportCo, timestamp: new Date().toISOString() };
+
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> กำลังบันทึก...';
+
+  // Save locally
+  localData = localData.filter(r => r.teacher !== teacher);
+  localData.push(row);
+  localStorage.setItem('sjp_elective_data', JSON.stringify(localData));
+
+  // Try Google Sheet
+  const url = localStorage.getItem('sjp_gs_url');
+  let gsOk = false;
+  if (url) {
+    try {
+      await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(row),
+        headers: { 'Content-Type': 'application/json' },
+        mode: 'no-cors'
+      });
+      gsOk = true;
+    } catch(e) { gsOk = false; }
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '✅ ส่งข้อมูล';
+
+  if (url && gsOk) {
+    showToast('✅ บันทึกข้อมูลเรียบร้อยแล้ว!');
+  } else if (url) {
+    showToast('⚠️ บันทึกเฉพาะเครื่องนี้ (ตรวจสอบ URL)', true);
+  } else {
+    showToast('💾 บันทึกเฉพาะเครื่องนี้ (ยังไม่ได้ตั้งค่า Sheet)');
+  }
+}
+
+function showAlert(msg) {
+  const el = document.getElementById('form-alert');
+  el.textContent = '⚠️ ' + msg;
+  el.style.display = 'block';
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ===== DASHBOARD =====
+async function loadDashboard() {
+  let data = [...localData];
+
+  // Try fetch from Google Sheet
+  const url = localStorage.getItem('sjp_gs_url');
+  if (url) {
+    try {
+      const resp = await fetch(url + '?action=get', { mode: 'cors' });
+      const json = await resp.json();
+      if (json.status === 'ok' && json.data && json.data.length > 0) {
+        data = json.data;
+      }
+    } catch(e) { /* use local */ }
+  }
+
+  renderDashboard(data);
+}
+
+function renderDashboard(data) {
+  // รวบรวมครูที่ตอบแล้ว (ทั้งครูหลักและครูร่วมสอน)
+  const teachersDone   = new Set(data.map(r => r.teacher));
+  const coTeachersDone = new Set([
+    ...data.filter(r => r.careerCo).map(r => r.careerCo),
+    ...data.filter(r => r.sportCo).map(r => r.sportCo)
+  ]);
+  // รวมทั้งสองกลุ่ม
+  const allDone = new Set([...teachersDone, ...coTeachersDone]);
+
+  // กรองเฉพาะชื่อที่อยู่ในรายชื่อครู 19 คน
+  const doneFinal = new Set(TEACHERS.filter(t => allDone.has(t)));
+
+  const careerSubjs = data.filter(r => r.careerSubject);
+  const sportSubjs  = data.filter(r => r.sportSubject);
+
+  document.getElementById('stat-done').textContent   = doneFinal.size;
+  document.getElementById('stat-career').textContent = careerSubjs.length;
+  document.getElementById('stat-sport').textContent  = sportSubjs.length;
+
+  const pct = Math.round((doneFinal.size / 19) * 100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `${doneFinal.size}/19 คน (${pct}%)`;
+
+  // teacher grid — แสดง badge บอกว่าตอบเองหรือเป็นครูร่วม
+  const grid = document.getElementById('teacher-status-grid');
+  grid.innerHTML = TEACHERS.map(t => {
+    const isMain = teachersDone.has(t);
+    const isCo   = coTeachersDone.has(t);
+    const done   = isMain || isCo;
+    const tag    = isMain ? '' : (isCo ? `<span style="font-size:10px;background:var(--gold);color:#fff;border-radius:4px;padding:1px 5px;margin-left:4px;">ร่วมสอน</span>` : '');
+    return `<div class="teacher-chip ${done ? 'done' : 'pending'}">
+      <div class="dot ${done ? 'dot-done' : 'dot-pending'}"></div>
+      <span>${t.replace(/^(นาย|นาง(?:สาว)?)\s*/, m => `<small style="font-size:10px;opacity:0.7">${m}</small>`)}${tag}</span>
+    </div>`;
+  }).join('');
+
+  // career list
+  const careerEl = document.getElementById('career-list');
+  if (careerSubjs.length === 0) {
+    careerEl.innerHTML = '<div class="empty-state"><div class="emoji">📭</div><div>ยังไม่มีข้อมูล</div></div>';
+  } else {
+    careerEl.innerHTML = careerSubjs.map(r => `
+      <div class="subj-item career">
+        <span class="subj-badge badge-career">อาชีพ</span>
+        <div class="subj-info">
+          <div class="subj-name">📚 ${r.careerSubject}</div>
+          <div class="subj-teachers">ครูผู้สอน: <span>${r.teacher}</span>
+          ${r.careerCo ? ` • ครูร่วม: <span>${r.careerCo}</span>` : ''}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  // sport list
+  const sportEl = document.getElementById('sport-list');
+  if (sportSubjs.length === 0) {
+    sportEl.innerHTML = '<div class="empty-state"><div class="emoji">📭</div><div>ยังไม่มีข้อมูล</div></div>';
+  } else {
+    sportEl.innerHTML = sportSubjs.map(r => `
+      <div class="subj-item sport">
+        <span class="subj-badge badge-sport">กีฬา</span>
+        <div class="subj-info">
+          <div class="subj-name">🏃 ${r.sportSubject}</div>
+          <div class="subj-teachers">ครูผู้สอน: <span>${r.teacher}</span>
+          ${r.sportCo ? ` • ครูร่วม: <span>${r.sportCo}</span>` : ''}</div>
+        </div>
+      </div>`).join('');
+  }
+}
+
+// ===== ADMIN PIN =====
+const DEFAULT_PIN = '2569';
+let pinInput = '';
+let adminUnlocked = false;
+
+function getPin() { return localStorage.getItem('sjp_admin_pin') || DEFAULT_PIN; }
+
+function pinPress(d) {
+  if (pinInput.length >= 4) return;
+  pinInput += d;
+  updatePinDots();
+  if (pinInput.length === 4) setTimeout(checkPin, 120);
+}
+function pinBack() {
+  pinInput = pinInput.slice(0, -1);
+  updatePinDots();
+  document.getElementById('pin-error').textContent = '';
+}
+function pinClear() {
+  pinInput = '';
+  updatePinDots();
+  document.getElementById('pin-error').textContent = '';
+}
+function updatePinDots() {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('d' + i).classList.toggle('filled', i < pinInput.length);
+  }
+}
+function checkPin() {
+  if (pinInput === getPin()) {
+    adminUnlocked = true;
+    document.getElementById('admin-lock-screen').style.display = 'none';
+    document.getElementById('admin-content').style.display = 'block';
+    document.getElementById('gs-url').value = localStorage.getItem('sjp_gs_url') || '';
+    pinInput = '';
+    updatePinDots();
+  } else {
+    document.getElementById('pin-error').textContent = '❌ รหัสไม่ถูกต้อง กรุณาลองใหม่';
+    pinInput = '';
+    updatePinDots();
+    // shake effect
+    const lock = document.getElementById('admin-lock-screen');
+    lock.style.transition = 'transform 0.05s';
+    [0,1,2,3].reduce((p,i) => p.then(() => new Promise(r => {
+      lock.style.transform = i%2===0 ? 'translateX(8px)' : 'translateX(-8px)';
+      setTimeout(r, 60);
+    })), Promise.resolve()).then(() => { lock.style.transform = ''; });
+  }
+}
+function adminLogout() {
+  adminUnlocked = false;
+  document.getElementById('admin-lock-screen').style.display = 'block';
+  document.getElementById('admin-content').style.display = 'none';
+  pinInput = ''; updatePinDots();
+  document.getElementById('pin-error').textContent = '';
+}
+
+function changePin() {
+  const oldPin = document.getElementById('old-pin').value;
+  const newPin = document.getElementById('new-pin').value;
+  const confirmPin = document.getElementById('confirm-pin').value;
+  const msgEl = document.getElementById('pin-change-msg');
+  if (oldPin !== getPin()) { msgEl.style.color='var(--red)'; msgEl.textContent='❌ รหัสปัจจุบันไม่ถูกต้อง'; return; }
+  if (!/^\d{4}$/.test(newPin)) { msgEl.style.color='var(--red)'; msgEl.textContent='❌ PIN ต้องเป็นตัวเลข 4 หลักเท่านั้น'; return; }
+  if (newPin !== confirmPin) { msgEl.style.color='var(--red)'; msgEl.textContent='❌ PIN ใหม่ไม่ตรงกัน'; return; }
+  localStorage.setItem('sjp_admin_pin', newPin);
+  msgEl.style.color='var(--green)'; msgEl.textContent='✅ เปลี่ยน PIN เรียบร้อยแล้ว';
+  document.getElementById('old-pin').value='';
+  document.getElementById('new-pin').value='';
+  document.getElementById('confirm-pin').value='';
+}
+
+// ===== SETTINGS =====
+function saveSettings() {
+  gsUrl = document.getElementById('gs-url').value.trim();
+  localStorage.setItem('sjp_gs_url', gsUrl);
+}
+
+async function testConnection() {
+  const url = document.getElementById('gs-url').value.trim();
+  const statusEl = document.getElementById('conn-status');
+  if (!url) { statusEl.textContent = '⚠️ กรุณาใส่ URL ก่อนค่ะ'; statusEl.style.color = 'orange'; return; }
+  statusEl.textContent = '🔄 กำลังทดสอบ...'; statusEl.style.color = '#666';
+  try {
+    const resp = await fetch(url + '?action=get');
+    const json = await resp.json();
+    if (json.status === 'ok') {
+      statusEl.textContent = '✅ เชื่อมต่อสำเร็จ! พบข้อมูล ' + json.data.length + ' แถว';
+      statusEl.style.color = 'var(--green)';
+      if (json.data.length > 0) {
+        localData = json.data;
+        localStorage.setItem('sjp_elective_data', JSON.stringify(localData));
+      }
+    } else {
+      throw new Error(json.msg);
+    }
+  } catch(e) {
+    statusEl.textContent = '❌ เชื่อมต่อไม่ได้: ' + e.message;
+    statusEl.style.color = 'var(--red)';
+  }
+}
+
+function clearLocalData() {
+  if (confirm('ต้องการล้างข้อมูลในเครื่องนี้ใช่ไหมคะ?')) {
+    localData = [];
+    localStorage.removeItem('sjp_elective_data');
+    showToast('🗑️ ล้างข้อมูลแล้ว');
+  }
+}
+
+function copyCode() {
+  const code = document.getElementById('gs-code').textContent;
+  navigator.clipboard.writeText(code).then(() => showToast('📋 คัดลอก Code แล้ว!'));
+}
+
+// ===== TOAST =====
+let toastTimer;
+function showToast(msg, isError = false) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast' + (isError ? ' error' : '');
+  clearTimeout(toastTimer);
+  setTimeout(() => el.classList.add('show'), 10);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+// init dashboard on load
+loadDashboard();
+</script>
+</body>
+</html>
